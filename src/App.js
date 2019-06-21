@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { Switch, Route, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Table from "./components/table";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    const { ...other } = this.props;
+
+    return (
+      <div className="main">
+        <Switch>
+          <h1>Your Site</h1>
+          <Route exact path="/" render={() => <Table {...other} />} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return { ...state };
+}
+
+// Anything returned from this function will end up as props
+// on this container
+function mapDispatchToProps(dispatch) {
+  // Whenever getUser is called, the result should be passed
+  // to all our reducers
+  return bindActionCreators({}, dispatch);
+}
+
+// Promote component to a container - it needs to know
+// about this new dispatch method, fetchActiveUser. Make it available
+// as a prop
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);
