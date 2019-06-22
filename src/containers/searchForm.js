@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
 
 import { fetchCategories } from "../actions";
-import DropsownListObject from "../components/dropDownList";
 
 class SearchForm extends Component {
   componentDidMount() {
@@ -13,8 +12,8 @@ class SearchForm extends Component {
 
   renderCategory(data) {
     return (
-      <div class="form-group col-md-5">
-        <label for="inputCategory">Category</label>
+      <div className="form-group col-md-5">
+        <label htmlFor="inputCategory">Category</label>
         <select name="category" className="form-control">
           {data
             .filter(key => key.is_hidden !== true)
@@ -32,8 +31,8 @@ class SearchForm extends Component {
 
   renderPostcode() {
     return (
-      <div class="form-group col-md-5">
-        <label for="inputPostcode">Postcode</label>
+      <div className="form-group col-md-5">
+        <label htmlFor="inputPostcode">Postcode</label>
         <input type="text" name="postcode" className="form-control" />
       </div>
     );
@@ -49,8 +48,8 @@ class SearchForm extends Component {
         <div className="form-row align-items-center">
           {this.renderCategory(data)}
           {this.renderPostcode()}
-          <div class="form-group col-md-2">
-            <button type="submit" class="btn btn-primary">
+          <div className="form-group col-md-2">
+            <button type="submit" className="btn btn-primary">
               Submit
             </button>
           </div>
