@@ -2,3 +2,11 @@
   font-family: sans-serif;
   text-align: center;
 }
+.react-bootstrap-table-pagination-list {
+  text-align: center !important;
+  transform: translateX(-20%) !important;
+}
+
+.react-bootstrap-table-page-btns-ul {
+  float: none !important;
+}

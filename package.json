@@ -19,6 +19,7 @@
     "react-star-rating-component": "1.4.1",
     "redux": "4.0.1",
     "redux-devtools-extension": "2.13.8",
+    "redux-form": "latest",
     "redux-promise": "0.6.0"
   },
   "devDependencies": {

@@ -13,7 +13,7 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 
 import StarRatingComponent from "react-star-rating-component";
 
-import { fetchPro, fetchProCount } from "../actions/pro";
+import { fetchPro } from "../actions/pro";
 
 const reviewRatingFormatter = (cell, row) => {
   return (
@@ -60,57 +60,17 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.optionsPagination = {
+      custom: true,
       page: 1,
       sizePerPage: 20,
       hideSizePerPage: true,
-      totalSize: 0,
-      firstPageText: "<<",
-      lastPageText: ">>",
-      withFirstAndLast: true,
-      hidePageListOnlyOnePage: true,
-      alwaysShowAllBtns: false
+      totalSize: 0
     };
   }
   componentDidMount() {
     //test on load
     //this.props.fetchPro(37, "sw11", 0, 20);
   }
-
-  noDataOptions(text) {
-    return <div>{text}</div>;
-  }
-
-  handleTableChange = (type, { page, sizePerPage }) => {
-    const currentIndex = (page - 1) * sizePerPage;
-    /*setTimeout(() => {
-      this.setState(() => ({
-        page,
-        data: products.slice(currentIndex, currentIndex + sizePerPage),
-        sizePerPage
-      }));
-    }, 2000);*/
-    this.optionsPagination.page = page;
-    console.log(type);
-    console.log(page);
-    console.log(sizePerPage);
-    console.log(currentIndex);
-    console.log(currentIndex + sizePerPage);
-    const { category, postcode } = this.props.form.search_pros.values;
-    const self = this;
-    this.props.fetchProCount(category, postcode, 0).then(response => {
-      const { proCountReducer } = self.props;
-      if (proCountReducer > 0) {
-        self.props.fetchPro(
-          category,
-          postcode,
-          currentIndex,
-          currentIndex + sizePerPage
-        );
-      } else {
-        console.log("no data found");
-      }
-    });
-  };
 
   render() {
     const data =
@@ -119,25 +79,17 @@ class Table extends Component {
         ? []
         : this.props.proReducer;
     const options = this.optionsPagination;
-    const totalSize =
-      this.props.proCountReducer !== undefined &&
-      typeof this.props.proCountReducer === "number"
-        ? this.props.proCountReducer
-        : 0;
-    console.log(this.props.proCountReducer);
-    options.totalSize = totalSize;
     console.log(options);
     return (
       <div>
-        <BootstrapTable
-          keyField="id"
-          data={data}
-          columns={columns}
-          pagination={paginationFactory(options)}
-          //noDataIndication={this.noDataOptions(`Search to show results`)}
-          remote={{ pagination: true, filter: false, sort: false }}
-          onTableChange={this.handleTableChange}
-        />
+        <PaginationProvider pagination={paginationFactory(options)}>
+          {({ paginationProps, paginationTableProps }) => (
+            <div>
+              <BootstrapTable keyField="id" data={data} columns={columns} />
+              <PaginationListStandalone {...paginationProps} />
+            </div>
+          )}
+        </PaginationProvider>
       </div>
     );
   }
@@ -149,7 +101,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPro, fetchProCount }, dispatch);
+  return bindActionCreators({ fetchPro }, dispatch);
 }
 export default withRouter(
   connect(
