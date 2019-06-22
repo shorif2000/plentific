@@ -5,9 +5,11 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import reducers from "./reducers";
 import promise from "redux-promise";
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import App from "./App";
+
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 const store = createStore(
   reducers,

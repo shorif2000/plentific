@@ -2,17 +2,15 @@ import React, { Component } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Table from "./components/table";
+import View from "./components";
 
 class App extends Component {
   render() {
-    const { ...other } = this.props;
-
     return (
-      <div className="main">
+      <div className="container border">
+        <h1 className="border-bottom">Your Site</h1>
         <Switch>
-          <h1>Your Site</h1>
-          <Route exact path="/" render={() => <Table {...other} />} />
+          <Route exact path="/" render={() => <View />} />
         </Switch>
       </div>
     );
