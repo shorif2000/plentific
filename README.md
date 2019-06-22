@@ -39,5 +39,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Assumptions
 
-Kept it as basic as possible. Added a bit of redux, redux-form, router, csp
-I would have had an api call to get count of search instead of grabbing all the result and creating paginations etc.
+Kept it as basic as possible. 
+Added a bit of redux, redux-form, react-router, CSP
+I would have had an api call to get count of search instead of grabbing all the result to get total count for creating paginations etc.
+assumed pagination numbers will not show when there is less than 20 search results.
