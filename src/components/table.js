@@ -1,53 +1,37 @@
+import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+
+import paginationFactory, {
+  PaginationProvider,
+  PaginationListStandalone
+} from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Redirect, Link } from "react-router-dom";
-import { withRouter } from "react-router";
-import axios from "axios";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+import overlayFactory from "react-bootstrap-table2-overlay";
 
-const products = [];
-const columns = [
-  {
-    dataField: "id",
-    text: "Id"
-  },
-  {
-    dataField: "name",
-    text: "Name"
-  },
-  {
-    dataField: "price",
-    text: "Postcode"
-  },
-  {
-    dataField: "rating",
-    text: "Review Rating"
-  }
-];
-
-class Table extends Component {
-  render() {
-    return (
-      <div>
-        <BootstrapTable keyField="id" data={products} columns={columns} />
-      </div>
-    );
-  }
-}
-function mapStateToProps(state) {
-  return {
-    ...state
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
-}
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Table)
+export const Table = ({
+  data,
+  page,
+  sizePerPage,
+  onTableChange,
+  totalSize,
+  columns,
+  options,
+  noDataIndication,
+  loading
+}) => (
+  <BootstrapTable
+    keyField="id"
+    data={data}
+    columns={columns}
+    pagination={paginationFactory(options)}
+    remote={{ pagination: true, filter: false, sort: false }}
+    onTableChange={onTableChange}
+    noDataIndication={noDataIndication}
+    loading={loading} //only loading is true, react-bootstrap-table will render overlay
+    overlay={overlayFactory({
+      spinner: true,
+      background: "rgba(192,192,192,0.3)"
+    })}
+  />
 );

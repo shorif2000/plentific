@@ -4,9 +4,15 @@
 }
 .react-bootstrap-table-pagination-list {
   text-align: center !important;
-  transform: translateX(-20%) !important;
+  /*transform: translateX(-20%) !important;*/
+  margin: 0 auto !important;
 }
 
 .react-bootstrap-table-page-btns-ul {
   float: none !important;
+  display: inline-flex !important;
+}
+
+.react-bootstrap-table-pagination div:first-child {
+  display: none;
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Table from "../containers/table";
+import ProsTable from "../containers/prosTable";
 import SearchForm from "../containers/searchForm";
 
 class View extends Component {
@@ -7,7 +7,7 @@ class View extends Component {
     return (
       <>
         <SearchForm />
-        <Table />
+        <ProsTable />
       </>
     );
   }

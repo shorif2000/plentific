@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+
+import ErrorBoundary from "./components/errorboundary";
 import View from "./components";
 
 class App extends Component {
@@ -9,9 +11,11 @@ class App extends Component {
     return (
       <div className="container border">
         <h1 className="border-bottom">Your Site</h1>
-        <Switch>
-          <Route exact path="/" render={() => <View />} />
-        </Switch>
+        <ErrorBoundary>
+          <Switch>
+            <Route exact path="/" render={() => <View />} />
+          </Switch>
+        </ErrorBoundary>
       </div>
     );
   }

@@ -4,9 +4,9 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
 
 import { fetchCategories } from "../actions";
-import { fetchPro, fetchProCount } from "../actions/pro";
+import { requestPro, fetchPro, fetchProCount } from "../actions/pro";
 
-import { Field, reduxForm, change } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { valid_postcode } from "../components/validation";
 
 const validatePostcode = value =>
@@ -157,24 +157,20 @@ class SearchForm extends Component {
 
   onSubmit(values) {
     const { category, postcode } = values;
-    const self = this;
-    this.props.fetchProCount(category, postcode, 0).then(response => {
-      const { proCountReducer } = self.props;
-      if (proCountReducer > 0) {
-        self.props.fetchPro(category, postcode, 0, 20);
-      } else {
-        console.log("no data found");
-      }
-    });
+
+    this.props
+      .requestPro()
+      .then(() => this.props.fetchProCount(category, postcode, 0))
+      .then(() => this.props.fetchPro(category, postcode, 0));
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, categoriesReducer } = this.props;
     const data =
-      this.props.categoriesReducer === undefined ||
-      Object.keys(this.props.categoriesReducer).length === 0
+      categoriesReducer === undefined ||
+      Object.keys(categoriesReducer).length === 0
         ? []
-        : this.props.categoriesReducer;
+        : categoriesReducer;
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
         <div className="form-row align-items-center">
@@ -200,7 +196,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchCategories, change, fetchPro, fetchProCount },
+    { fetchCategories, requestPro, fetchPro, fetchProCount },
     dispatch
   );
 }

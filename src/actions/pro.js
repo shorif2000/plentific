@@ -2,9 +2,18 @@ import axios from "axios";
 var CancelToken = axios.CancelToken;
 let fetch_pro, fetch_pro_count;
 
+export const REQUEST_PRO = "request_pro";
+
+export async function requestPro() {
+  return {
+    type: REQUEST_PRO,
+    payload: {}
+  };
+}
+
 export const FETCH_PRO = "fetch_pro";
 
-export async function fetchPro(category_id, location, offset, limit) {
+export async function fetchPro(category_id, location, offset) {
   fetch_pro && fetch_pro();
   const params = { category_id: category_id, location: location };
   //console.log(params);
@@ -22,7 +31,7 @@ export async function fetchPro(category_id, location, offset, limit) {
       headers: {
         "Content-Type": "application/json",
         "x-pagination-offset": offset,
-        "x-pagination-limit": limit
+        "x-pagination-limit": 20
       }
     }
   );
