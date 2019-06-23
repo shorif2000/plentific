@@ -19,6 +19,8 @@ Demo available here http://52.56.180.211:3001/
  assumed pagination numbers will not show when there is less than 20 search results.
  
  I have noticed some cors issue when accessing the api. I have decided not set up any proxy.
+ 
+ Arrow buttons on pagination will take you prev and next
 
 ## Troublshooting
 
