@@ -17,7 +17,11 @@ Demo available here http://52.56.180.211:3001/
  I would have had an api call to get count of search instead of grabbing all the result to get total count for creating paginations etc.
 
  assumed pagination numbers will not show when there is less than 20 search results.
+ 
+ I have noticed some cors issue when accessing the api. I have decided not set up any proxy.
 
 ## Troublshooting
 
  If you have face issues you may access sandbox here https://codesandbox.io/s/plentific-uo68b
+ 
+ 
