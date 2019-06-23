@@ -24,6 +24,6 @@ Demo available here http://52.56.180.211:3001/
 
 ## Troublshooting
 
- If you have face issues you may access sandbox here https://codesandbox.io/s/plentific-uo68b
+ If you face issues you may access sandbox here https://codesandbox.io/s/plentific-uo68b
  
  
