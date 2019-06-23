@@ -4,7 +4,7 @@ Demo available here http://52.56.180.211:3001/
 
  glone repo
 
- you may have to modify CSP tags for it to work on localhost/ip you may be using within `public/index.html`
+ you may have to modify CSP tags for it to work on localhost/ip. Edit file `public/index.html`
 
  run `npm run start`
 
