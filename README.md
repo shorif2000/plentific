@@ -1,4 +1,4 @@
-Demo available here http://52.56.180.211:3001/
+Demo being served by apache available here http://52.56.180.211:3001/
 
 ## Setup
 
@@ -6,7 +6,7 @@ Demo available here http://52.56.180.211:3001/
 
  you may have to modify CSP tags for it to work on localhost/ip. Edit file `public/index.html`
 
- run `npm run start`
+ run `npm i` then `npm run start`
 
 ## Assumptions
 
