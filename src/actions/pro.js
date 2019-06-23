@@ -1,6 +1,6 @@
 import axios from "axios";
 var CancelToken = axios.CancelToken;
-let fetch_pro, fetch_pro_count;
+let pro_count_cancel, pro_cancel;
 
 export const REQUEST_PRO = "request_pro";
 
@@ -14,7 +14,7 @@ export async function requestPro() {
 export const FETCH_PRO = "fetch_pro";
 
 export async function fetchPro(category_id, location, offset) {
-  fetch_pro && fetch_pro();
+  pro_cancel && pro_cancel() && pro_count_cancel();
   const params = { category_id: category_id, location: location };
   //console.log(params);
   //const params = new URLSearchParams();
@@ -26,7 +26,7 @@ export async function fetchPro(category_id, location, offset) {
     {
       cancelToken: new CancelToken(function executor(c) {
         // An executor function receives a cancel function as a parameter
-        fetch_pro = c;
+        pro_cancel = c;
       }),
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export async function fetchPro(category_id, location, offset) {
 export const FETCH_PRO_COUNT = "fetch_pro_count";
 
 export async function fetchProCount(category_id, location, offset) {
-  fetch_pro_count && fetch_pro_count();
+  pro_count_cancel && pro_count_cancel();
   const params = { category_id: category_id, location: location };
   //console.log(params);
   //const params = new URLSearchParams();
@@ -56,7 +56,7 @@ export async function fetchProCount(category_id, location, offset) {
     {
       cancelToken: new CancelToken(function executor(c) {
         // An executor function receives a cancel function as a parameter
-        fetch_pro = c;
+        pro_count_cancel = c;
       }),
       headers: {
         "Content-Type": "application/json",

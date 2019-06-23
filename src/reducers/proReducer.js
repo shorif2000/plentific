@@ -3,7 +3,7 @@ import { FETCH_PRO } from "../actions/pro";
 import { FETCH_PRO_COUNT } from "../actions/pro";
 
 export default function(
-  state = { isFetching: false, count: 0, items: [], page: 1 },
+  state = { isFetching: false, count: {}, items: [], page: 1 },
   action
 ) {
   switch (action.type) {
@@ -26,7 +26,12 @@ export default function(
 
     case FETCH_PRO:
       if (action.payload.data.code === 0) {
-        const { headers } = action.payload;
+        const {
+          headers,
+          data: {
+            response: { pros }
+          }
+        } = action.payload;
         const limit = parseInt(headers["x-pagination-limit"]);
         const offset = parseInt(headers["x-pagination-offset"]);
         let page;
@@ -37,10 +42,9 @@ export default function(
         }
         return Object.assign({}, state, {
           isFetching: false,
-          items: action.payload.data.response.pros,
+          items: pros,
           page: page
         });
-        //return action.payload.data.response.pros;
       }
       return Object.assign({}, state, {
         isFetching: false,

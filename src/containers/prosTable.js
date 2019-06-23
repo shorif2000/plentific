@@ -61,14 +61,13 @@ class ProsTable extends Component {
       totalSize: 0,
       firstPageText: "<<",
       lastPageText: ">>",
-      withFirstAndLast: true,
+      withFirstAndLast: false,
+      prePageText: "<<",
+      nextPageText: ">>",
       hidePageListOnlyOnePage: true,
       alwaysShowAllBtns: false
     };
     this.noDataIndication = this.noDataIndication.bind(this);
-    this.state = {
-      isFetching: false
-    };
   }
   componentDidMount() {
     //test on load
@@ -76,8 +75,9 @@ class ProsTable extends Component {
   }
 
   noDataIndication() {
-    const { proCountReducer } = this.props;
-    const { isFetching } = this.state;
+    const {
+      proReducer: { isFetching, count }
+    } = this.props;
     if (isFetching) {
       return (
         <div className="spinner">
@@ -88,24 +88,30 @@ class ProsTable extends Component {
           <div className="rect5" />
         </div>
       );
-    } else if (typeof proCountReducer === "object") {
+    } else if (typeof count === "object") {
       return <div>Search to display Pros</div>;
-    } else if (proCountReducer === 0) {
+    } else if (count === 0) {
       return <div>No data found</div>;
     }
     return <div />;
   }
 
   handleTableChange = (type, { page, sizePerPage }) => {
-    this.setState({ isFetching: true });
     const currentIndex = (page - 1) * sizePerPage;
     this.optionsPagination.page = page;
-    const { category, postcode } = this.props.form.search_pros.values;
-    //const self = this;
+    const {
+      form: {
+        search_pros: {
+          values: { category, postcode }
+        }
+      }
+    } = this.props;
+    // @TODO fetch procount does not need to be called all the time. change veent needs to be added to redux
     this.props
       .requestPro()
       .then(() => this.props.fetchProCount(category, postcode, 0))
-      .then(() => this.props.fetchPro(category, postcode, currentIndex));
+      .then(() => this.props.fetchPro(category, postcode, currentIndex))
+      .catch(thrown => console.log(thrown));
   };
 
   render() {

@@ -6,16 +6,20 @@ import { withRouter } from "react-router";
 import { fetchCategories } from "../actions";
 import { requestPro, fetchPro, fetchProCount } from "../actions/pro";
 
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { valid_postcode } from "../components/validation";
 
 const validatePostcode = value =>
   valid_postcode(value) ? undefined : "Enter valid postcode";
 
+const selector = formValueSelector("search_pros");
+
 class SearchForm extends Component {
   constructor() {
     super();
+    this.state = { request: true };
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +44,6 @@ class SearchForm extends Component {
       touched && error ? "has-danger" : ""
     }`;
 
-    //const id = `select_${input.name}`;
     return (
       <div className={className}>
         <label className="control-label col-sm-2 col-md-4">{label}</label>
@@ -89,8 +92,6 @@ class SearchForm extends Component {
         name="category"
         component={this.renderSelectField}
         type="select"
-        //onBlur={e => this.onAfterSaveCell(e, "category")}
-        //onFocus={e => this.onBeforeSaveCell(e, "category")}
       />
     );
   }
@@ -151,17 +152,50 @@ class SearchForm extends Component {
         validate={[validatePostcode]}
         maxlength="5"
         value=""
+        //nChange={event => event.preventDefault()}
       />
     );
   }
 
-  onSubmit(values) {
-    const { category, postcode } = values;
+  onSubmit(params) {
+    const { category, postcode } = params;
+    const {
+      form: {
+        search_pros: { values }
+      }
+    } = this.props;
+    const { request } = this.state;
 
-    this.props
-      .requestPro()
-      .then(() => this.props.fetchProCount(category, postcode, 0))
-      .then(() => this.props.fetchPro(category, postcode, 0));
+    if (request) {
+      this.props
+        .requestPro()
+        .then(() => this.props.fetchProCount(category, postcode, 0))
+        .then(() => this.props.fetchPro(category, postcode, 0))
+        .then(() => this.setState({ request: false }))
+        .catch(thrown => console.log(thrown.message));
+    } else {
+      this.props
+        .requestPro()
+        //.then(() => this.props.fetchProCount(category, postcode, 0))
+        .then(() => this.props.fetchPro(category, postcode, 0))
+        .then(() => this.setState({ request: false }))
+        .catch(thrown => console.log(thrown.message));
+    }
+  }
+
+  handleOnChange(event) {
+    event.preventDefault();
+    const {
+      form: {
+        search_pros: { values }
+      }
+    } = this.props;
+    if (
+      values[event.target.name] &&
+      values[event.target.name] !== event.target.value
+    ) {
+      this.setState({ request: true });
+    }
   }
 
   render() {
@@ -172,7 +206,10 @@ class SearchForm extends Component {
         ? []
         : categoriesReducer;
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <form
+        onSubmit={handleSubmit(this.onSubmit)}
+        onChange={event => this.handleOnChange(event)}
+      >
         <div className="form-row align-items-center">
           {this.renderCategory(data)}
           {this.renderPostcode()}
@@ -190,7 +227,7 @@ class SearchForm extends Component {
 function mapStateToProps(state) {
   return {
     ...state,
-    form: state.form
+    prevValues: selector(state, "category", "postcode")
   };
 }
 
@@ -206,7 +243,6 @@ export default reduxForm({
   initialValues: {
     postcode: ""
   }
-  //enableReinitialize: true
 })(
   withRouter(
     connect(
