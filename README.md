@@ -13,6 +13,8 @@ Demo available here http://52.56.180.211:3001/
  Kept it as basic as possible. 
 
  Added a bit of redux, redux-form, react-router, CSP
+ 
+ validated 1st part of postcode only
 
  I would have had an api call to get count of search instead of grabbing all the result to get total count for creating paginations etc.
 
