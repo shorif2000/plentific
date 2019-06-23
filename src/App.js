@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 
 import ErrorBoundary from "./components/errorboundary";
 import View from "./components";
+import GenericNotFound from "./components/genericNotFound";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
         <ErrorBoundary>
           <Switch>
             <Route exact path="/" render={() => <View />} />
+            <Route path="*" component={GenericNotFound} code={404} />
           </Switch>
         </ErrorBoundary>
       </div>
