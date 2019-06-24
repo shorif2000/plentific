@@ -15,7 +15,10 @@ export const FETCH_PRO = "fetch_pro";
 
 export async function fetchPro(category_id, location, offset) {
   pro_cancel && pro_cancel() && pro_count_cancel();
-  const params = { category_id: category_id, location: location };
+  const params = { category_id: category_id };
+  if (location !== null && location !== "") {
+    params.location = location;
+  }
   //console.log(params);
   //const params = new URLSearchParams();
   //params.append("category_id", category_id);
@@ -45,7 +48,10 @@ export const FETCH_PRO_COUNT = "fetch_pro_count";
 
 export async function fetchProCount(category_id, location, offset) {
   pro_count_cancel && pro_count_cancel();
-  const params = { category_id: category_id, location: location };
+  const params = { category_id: category_id };
+  if (location !== null && location !== "") {
+    params.location = location;
+  }
   //console.log(params);
   //const params = new URLSearchParams();
   //params.append("category_id", category_id);

@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 import { fetchCategories } from "../actions";
 import { requestPro, fetchPro, fetchProCount } from "../actions/pro";
 
-import { Field, reduxForm, formValueSelector } from "redux-form";
+import { Field, reduxForm, formValueSelector, change } from "redux-form";
 import { valid_postcode } from "../components/validation";
 
 const validatePostcode = value =>
@@ -17,9 +17,11 @@ const selector = formValueSelector("search_pros");
 class SearchForm extends Component {
   constructor() {
     super();
-    this.state = { request: true };
+    this.state = { request: true, postcode: "", category: "" };
     this.onSubmit = this.onSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.renderSelectField = this.renderSelectField.bind(this);
+    this.renderTextField = this.renderTextField.bind(this);
   }
 
   componentDidMount() {
@@ -28,6 +30,7 @@ class SearchForm extends Component {
       const data = response.payload.data;
       if (Object.keys(data).length > 0) {
         self.props.initialize({ category: data[0].id });
+        self.setState({ category: data[0].id });
       }
     });
   }
@@ -52,6 +55,7 @@ class SearchForm extends Component {
             {...input}
             className="form-control form-control-inline"
             type={type}
+            value={this.state[input.name]}
           >
             {data.map((e, key) => {
               return (
@@ -92,6 +96,10 @@ class SearchForm extends Component {
         name="category"
         component={this.renderSelectField}
         type="select"
+        onChange={event => {
+          event.preventDefault();
+          this.setState({ category: event.target.value, request: true });
+        }}
       />
     );
   }
@@ -118,6 +126,7 @@ class SearchForm extends Component {
             className="form-control form-control-inline"
             type={type}
             maxLength={maxlength}
+            value={this.state[input.name]}
           />
         </div>
         <div className="row-fluid">
@@ -151,26 +160,36 @@ class SearchForm extends Component {
         type="text"
         validate={[validatePostcode]}
         maxlength="5"
-        value=""
+        value={this.state.postcode}
+        onChange={event => {
+          event.preventDefault();
+          this.setState({ postcode: event.target.value, request: true });
+        }}
         //nChange={event => event.preventDefault()}
       />
     );
   }
 
   onSubmit(params) {
-    const { category, postcode } = params;
+    const { category, postcode, request } = this.state;
     const {
       form: {
         search_pros: { values }
       }
     } = this.props;
-    const { request } = this.state;
+    if (
+      values.category != category &&
+      (postcode !== "" && values.postcode != postcode)
+    ) {
+      console.log("not matching");
+    }
 
+    const location = postcode === "" ? null : postcode;
     if (request) {
       this.props
         .requestPro()
-        .then(() => this.props.fetchProCount(category, postcode, 0))
-        .then(() => this.props.fetchPro(category, postcode, 0))
+        .then(() => this.props.fetchProCount(category, location, 0))
+        .then(() => this.props.fetchPro(category, location, 0))
         .then(() => this.setState({ request: false }))
         .catch(thrown => console.log(thrown.message));
     } else {
@@ -194,7 +213,10 @@ class SearchForm extends Component {
       values[event.target.name] &&
       values[event.target.name] !== event.target.value
     ) {
-      this.setState({ request: true });
+      const state = this.state;
+      state[event.target.name] = event.target.value;
+      state.request = true;
+      this.setState(state);
     }
   }
 
@@ -206,10 +228,7 @@ class SearchForm extends Component {
         ? []
         : categoriesReducer;
     return (
-      <form
-        onSubmit={handleSubmit(this.onSubmit)}
-        onChange={event => this.handleOnChange(event)}
-      >
+      <form onSubmit={handleSubmit(this.onSubmit)}>
         <div className="form-row align-items-center">
           {this.renderCategory(data)}
           {this.renderPostcode()}
@@ -233,7 +252,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchCategories, requestPro, fetchPro, fetchProCount },
+    { fetchCategories, requestPro, fetchPro, fetchProCount, change },
     dispatch
   );
 }

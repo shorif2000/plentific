@@ -109,7 +109,7 @@ class ProsTable extends Component {
     // @TODO fetch procount does not need to be called all the time. change veent needs to be added to redux
     this.props
       .requestPro()
-      .then(() => this.props.fetchProCount(category, postcode, 0))
+      //.then(() => this.props.fetchProCount(category, postcode, 0))
       .then(() => this.props.fetchPro(category, postcode, currentIndex))
       .catch(thrown => console.log(thrown));
   };
