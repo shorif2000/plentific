@@ -178,8 +178,8 @@ class SearchForm extends Component {
       }
     } = this.props;
     if (
-      values.category != category &&
-      (postcode !== "" && values.postcode != postcode)
+      values.category !== category &&
+      (postcode !== "" && values.postcode !== postcode)
     ) {
       console.log("not matching");
     }
