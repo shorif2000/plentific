@@ -3,32 +3,13 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
 
-import { Table } from "../components/table";
-import StarRatingComponent from "react-star-rating-component";
-
 import { requestPro, fetchPro, fetchProCount } from "../actions/pro";
+
+import { Table } from "../components/Table";
+import { reviewRatingFormatter } from "../components/ReviewRatingFormatter";
+import { nameFormatter } from "../components/NameFormatter";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-
-const reviewRatingFormatter = (cell, row) => {
-  return (
-    <>
-      <StarRatingComponent
-        name="rate1"
-        starCount={5}
-        value={cell}
-        editing={false}
-        emptyStarColor={"#eee"}
-        starColor={"#000"}
-      />
-    </>
-  );
-};
-
-const nameFormatter = (cell, row) => {
-  const name = cell.substring(0, cell.lastIndexOf(" "));
-  return <>{name}</>;
-};
 
 const columns = [
   {

@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "dependencies": {
     "axios": "0.19.0",
-    "babel-polyfill": "^6.26.0",
     "bootstrap": "4.3.1",
+    "moxios": "0.4.0",
     "react": "16.8.6",
     "react-bootstrap": "0.32.4",
     "react-bootstrap-table-next": "3.1.4",
@@ -22,21 +22,17 @@
     "redux": "4.0.1",
     "redux-devtools-extension": "2.13.8",
     "redux-form": "latest",
-    "redux-promise": "0.6.0"
+    "redux-mock-store": "1.5.3",
+    "redux-promise": "0.6.0",
+    "redux-thunk": "2.3.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.4.4",
-    "babel-jest": "^24.8.0",
-    "jest": "^24.8.0",
-    "redux-mock-store": "^1.5.3",
-    "redux-thunk": "^2.3.0",
     "typescript": "3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
-    "test:watch": "npm test -- --watch",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "browserslist": [

@@ -5,13 +5,8 @@ const mockStore = configureStore(middlewares)
 
 import * as actions from '../../src/actions';
 
-// You would import the action from your codebase in a real scenario
-//const addTodo = () => ({ type: 'ADD_TODO' })
-const fetchCategories = actions.fetchCategories;
-
 
 describe('actions', () => {
-
 
   it('should dispatch action', () => {
 
@@ -20,11 +15,16 @@ describe('actions', () => {
   const store = mockStore(initialState)
 
   // Dispatch the action
-  store.dispatch(fetchCategories())
+  return store.dispatch(actions.fetchCategories)
+.then(() => {
+// Test if your store dispatched the expected actions
+    	expect(store.getActions()).toEqual(expectedActions);
+    });
 
   // Test if your store dispatched the expected actions
+/*
   const actions = store.getActions()
   const expectedPayload = { type: 'FETCH_CATEGORIES' }
-  expect(actions).toEqual([expectedPayload])
+  expect(actions).toEqual([expectedPayload])*/
 })
 })

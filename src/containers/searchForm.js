@@ -7,13 +7,59 @@ import { fetchCategories } from "../actions";
 import { requestPro, fetchPro, fetchProCount } from "../actions/pro";
 
 import { Field, reduxForm, formValueSelector, change } from "redux-form";
-import { valid_postcode } from "../components/validation";
-
+import { validPostcode } from "../components/Validation";
+//import { renderTextField } from "../components/RenderTextField";
 const validatePostcode = value =>
-  valid_postcode(value) ? undefined : "Enter valid postcode";
+  validPostcode(value) ? undefined : "Enter valid postcode";
 
 const selector = formValueSelector("search_pros");
 
+const renderTextField = function(field) {
+  const {
+    input,
+    label,
+    type,
+    meta: { touched, error, warning },
+    maxlength
+  } = field;
+
+  const className = `form-group col-md-5 ${
+    touched && error ? "has-danger" : ""
+  }`;
+  return (
+    <div className={className}>
+      <label className="control-label col-sm-2 col-md-4">{label}</label>
+      <div className="col-sm-12">
+        <input
+          {...input}
+          placeholder={label}
+          className="form-control form-control-inline"
+          type={type}
+          maxLength={maxlength}
+          value={this.state[input.name]}
+        />
+      </div>
+      <div className="row-fluid">
+        <div className="col-sm-2 col-md-4" />
+        <div className="col-sm-10 col-md-6">
+          {touched &&
+            ((error && (
+              <span className="text-danger">
+                <i className="fa fa-exclamation-circle" aria-hidden="true" />{" "}
+                {error}
+              </span>
+            )) ||
+              (warning && (
+                <span className="text-warning">
+                  <i className="fa fa-question-circle" aria-hidden="true" />{" "}
+                  {warning}
+                </span>
+              )))}
+        </div>
+      </div>
+    </div>
+  );
+};
 class SearchForm extends Component {
   constructor() {
     super();
@@ -21,7 +67,7 @@ class SearchForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.renderSelectField = this.renderSelectField.bind(this);
-    this.renderTextField = this.renderTextField.bind(this);
+    this.renderTextField = renderTextField.bind(this);
   }
 
   componentDidMount() {
@@ -104,53 +150,6 @@ class SearchForm extends Component {
     );
   }
 
-  renderTextField(field) {
-    const {
-      input,
-      label,
-      type,
-      meta: { touched, error, warning },
-      maxlength
-    } = field;
-
-    const className = `form-group col-md-5 ${
-      touched && error ? "has-danger" : ""
-    }`;
-    return (
-      <div className={className}>
-        <label className="control-label col-sm-2 col-md-4">{label}</label>
-        <div className="col-sm-12">
-          <input
-            {...input}
-            placeholder={label}
-            className="form-control form-control-inline"
-            type={type}
-            maxLength={maxlength}
-            value={this.state[input.name]}
-          />
-        </div>
-        <div className="row-fluid">
-          <div className="col-sm-2 col-md-4" />
-          <div className="col-sm-10 col-md-6">
-            {touched &&
-              ((error && (
-                <span className="text-danger">
-                  <i className="fa fa-exclamation-circle" aria-hidden="true" />{" "}
-                  {error}
-                </span>
-              )) ||
-                (warning && (
-                  <span className="text-warning">
-                    <i className="fa fa-question-circle" aria-hidden="true" />{" "}
-                    {warning}
-                  </span>
-                )))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   renderPostcode() {
     return (
       <Field
@@ -228,14 +227,17 @@ class SearchForm extends Component {
         ? []
         : categoriesReducer;
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <form onSubmit={handleSubmit(this.onSubmit)} className="">
         <div className="form-row align-items-center">
           {this.renderCategory(data)}
           {this.renderPostcode()}
           <div className="form-group col-md-2">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+            <label className="control-label col-sm-2 col-md-4" />
+            <div className="row-fluid">
+              <button type="submit" className="btn btn-secondary">
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </form>

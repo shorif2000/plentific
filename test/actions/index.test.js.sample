@@ -1,0 +1,44 @@
+import configureStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import moxios from "moxios";
+import * as actions from "../../src/actions";
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
+
+// You would import the action from your codebase in a real scenario
+//const addTodo = () => ({ type: 'ADD_TODO' })
+const fetchCategories = actions.fetchCategories;
+
+describe("actions", () => {
+  beforeEach(function() {
+    moxios.install();
+  });
+  afterEach(function() {
+    moxios.uninstall();
+  });
+  it("should dispatch action", () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: fetchCategories
+      });
+    });
+
+    const expectedActions = [
+      { type: actions.FETCH_CATEGORIES, posts: fetchCategories }
+    ];
+    // Initialize mockstore with empty state
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    console.log(fetchCategories());
+    // Dispatch the action
+    return store.dispatch(fetchCategories()).then(() => {
+      const actions = store.getActions();
+      const expectedPayload = { type: "FETCH_CATEGORIES" };
+      expect(actions).toEqual([expectedPayload]);
+    });
+  });
+});

@@ -3,9 +3,9 @@ import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import ErrorBoundary from "./components/errorboundary";
-import View from "./components";
-import GenericNotFound from "./components/genericNotFound";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { View } from "./components/View";
+import { GenericNotFound } from "./components/GenericNotFound";
 
 class App extends Component {
   render() {
